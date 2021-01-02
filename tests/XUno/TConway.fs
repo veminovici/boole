@@ -74,9 +74,7 @@ module TConway =
 
         [<Fact>]
         let ``Conway next`` () =
-            let ns = [Live; Dead; Live]
-
-            Live
-            |> Conway.next ns
+            [Live; Dead; Live]
+            |> Conway.next Live
             |> (=) Live
             |> Assert.True

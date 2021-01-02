@@ -15,7 +15,7 @@ module Conway =
     | Dead -> false
     | Live -> true
 
-    let countLive = List.where isLive >> List.length
+    let countLive = List.sumBy (function | Live -> 1 | Dead -> 0)
 
     let transition cell count =
         match cell, count with
@@ -24,10 +24,7 @@ module Conway =
         | Dead, 2 -> Live
         | _, _    -> Dead
 
-    let next ns cell =
-        ns
-        |> countLive
-        |> transition cell
+    let next cell = countLive >> transition cell
 
     let unfold zro = 
         zro

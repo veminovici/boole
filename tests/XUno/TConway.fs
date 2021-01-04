@@ -10,71 +10,124 @@ module TConway =
     type Tests (output: ITestOutputHelper) =
 
         [<Fact>]
-        let ``Cell isDead`` () =
-            Dead
-            |> Conway.isDead
+        let ``Board ofCells`` () =
+            let h = 2
+            let w = 3
+            let cs = [|1..6|]
+
+            let b = Board.ofCells h w cs
+
+            b.Cells
+            |> (=) cs
             |> Assert.True
 
-            Live
-            |> Conway.isDead
-            |> Assert.False
-
-        [<Fact>]
-        let ``Cell isLive`` () =
-            Live
-            |> Conway.isLive
+            b.Height
+            |> (=) h
             |> Assert.True
 
-            Dead
-            |> Conway.isLive
-            |> Assert.False
-
-        [<Fact>]
-        let ``Cell countLive`` () =
-
-            [Live; Dead; Live; Live; Dead]
-            |> Conway.countLive
-            |> (=) 3
+            b.Width
+            |> (=) w
             |> Assert.True
 
         [<Fact>]
-        let ``Conway law L2`` () =
-            (Live, 2)
-            ||> Conway.transition
-            |> (=) Live
+        let ``Board idx2xy`` () =
+            let h = 2
+            let w = 3
+            let cs = [|1..6|]
+            let b = Board.ofCells h w cs
+
+            let i = 4 
+            let xy = Board.idx2xy b i
+
+            xy
+            |> fst
+            |> (=) 1
+            |> Assert.True
+
+            xy
+            |> snd
+            |> (=) 1
             |> Assert.True
 
         [<Fact>]
-        let ``Conway law L3`` () =
-            (Live, 3)
-            ||> Conway.transition
-            |> (=) Live
+        let ``Board idx2xy`` () =
+            let h = 2
+            let w = 3
+            let cs = [|1..6|]
+            let b = Board.ofCells h w cs
+
+            let i = 4 
+            let i' = i |> Board.idx2xy b |> Board.xy2idx b
+
+            i
+            |> (=) i'
             |> Assert.True
 
         [<Fact>]
-        let ``Conway law D2`` () =
-            (Dead, 2)
-            ||> Conway.transition
-            |> (=) Live
+        let ``Board boxIdx`` () =
+
+            Board.boxIdxs (0, 0)
+            |> Array.length
+            |> (=) 8
             |> Assert.True
 
         [<Fact>]
-        let ``Conway law LD`` () =
-            (Live, 1)
-            ||> Conway.transition
-            |> (=) Dead
+        let ``Board boxValues`` () =
+            let h = 2
+            let w = 3
+            let cs = [|1..6|]
+            let b = Board.ofCells h w cs
+
+            [|
+                -1, 0
+                3, 0 
+                0, -1 
+                0, 2 
+                1, 1
+            |]
+            |> Board.boxValues b 100
+            |> (=) [|100; 100; 100; 100; 4 |]
+
+        [<Fact>]
+        let ``Board pretty`` () =
+            let h = 2
+            let w = 3
+            let cs = [|1..6|]
+            let b = Board.ofCells h w cs
+
+            b
+            |> Board.pretty
+            |> (<>) ""
             |> Assert.True
 
         [<Fact>]
-        let ``Conway law DD`` () =
-            (Dead, 3)
-            ||> Conway.transition
-            |> (=) Dead
+        let ``Board nextBoard`` () =
+            let h = 2
+            let w = 3
+            let cs = [|1..6|]
+            let b = Board.ofCells h w cs
+
+            b
+            |> Board.nextBoard (fun b i c -> c * 10)
+            |> (fun b -> b.Cells)
+            |> (=) [|10;20;30;40;50;60|]
             |> Assert.True
 
         [<Fact>]
-        let ``Conway next`` () =
-            [Live; Dead; Live]
-            |> Conway.next Live
-            |> (=) Live
+        let ``Conway nextBoard`` () =
+            let h = 3
+            let w = 3
+            let cs = [|
+                Conway.Dead; Conway.Live; Conway.Dead
+                Conway.Dead; Conway.Live; Conway.Dead
+                Conway.Dead; Conway.Live; Conway.Dead |]
+            let b = Board.ofCells h w cs
+
+            b
+            |> Conway.nextBoard
+            |> (fun b -> b.Cells)
+            |> (=) [| 
+                Conway.Dead;Conway.Dead;Conway.Dead
+                Conway.Live;Conway.Dead;Conway.Live
+                Conway.Dead;Conway.Dead;Conway.Dead|]
             |> Assert.True

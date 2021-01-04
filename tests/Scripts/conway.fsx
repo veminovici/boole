@@ -1,4 +1,11 @@
-﻿namespace Simplee.Intelligence
+type Cell = 
+    | Dead
+    | Live
+    with
+    override this.ToString() =
+        match this with
+        | Dead -> "o"
+        | Live -> "x"
 
 type Board<'T> = {
     Height: int
@@ -48,15 +55,6 @@ module Board =
 
 module Conway = 
 
-    type Cell = 
-        | Dead
-        | Live
-        with
-        override this.ToString() =
-            match this with
-            | Dead -> "o"
-            | Live -> "x"
-
     let private foldCell c vals =
         vals 
         |> Array.sumBy (function | Dead -> 0 | Live -> 1)
@@ -65,7 +63,7 @@ module Conway =
         | ls when c = Dead && ls = 3             -> Live
         | _                                      -> Dead
 
-    let private nextCell b i c =
+    let nextCell b i c =
         i 
         |> Board.idx2xy b 
         |> Board.boxIdxs 
@@ -73,3 +71,19 @@ module Conway =
         |> foldCell c
 
     let nextBoard = Board.nextBoard nextCell
+
+//
+// Tests
+//
+
+let tstConway () = 
+    [| 
+    Dead; Live; Dead; 
+    Dead; Live; Dead; 
+    Dead; Live; Dead|] 
+    |> Board.ofCells 3 3
+    |> Conway.nextBoard
+    |> Board.pretty
+    |> printfn "%s"
+
+tstConway ()

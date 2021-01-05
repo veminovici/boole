@@ -16,11 +16,11 @@
 <br />
 
 ## Description
-A F# library for common automata algorithms such **Conway** game of Live.
+A F# library for common automata algorithms such **Conway** game of Life.
 For more details please see the full [documentation](https://veminovici.github.io/boole/).
 
-## 1. Conway's Game of Live
-An implementation of the zero-player game of Live. 
+## 1. Conway's Game of Life
+An implementation of the zero-player game of life. 
 
 - Namespaces: *Simplee.Intelligence.Conway*
 - Source: [Conway.fs](https://github.com/veminovici/boole/blob/main/src/Boole/Conway.fs)

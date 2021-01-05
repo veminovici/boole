@@ -46,6 +46,10 @@ module Board =
         let cs = b.Cells |> Array.mapi (foldCell b)
         { b with Cells = cs }
 
+    let run foldCell zro =
+        zro
+        |> Seq.unfold (fun b -> let b' = nextBoard foldCell b in Some (b', b'))
+
 module Conway = 
 
     type Cell = 
@@ -72,4 +76,4 @@ module Conway =
         |> Board.boxValues b Dead 
         |> foldCell c
 
-    let nextBoard = Board.nextBoard nextCell
+    let run (zro: Board<Cell>) = Board.run nextCell zro

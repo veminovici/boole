@@ -13,7 +13,9 @@ let tstConway () =
     Dead; Live; Dead; 
     Dead; Live; Dead|] 
     |> Board.ofCells 3 3
-    |> nextBoard
+    |> run
+    |> Seq.skip 1
+    |> Seq.head
     |> Board.pretty
     |> printfn "%s"
 

@@ -114,7 +114,7 @@ module TConway =
             |> Assert.True
 
         [<Fact>]
-        let ``Conway nextBoard`` () =
+        let ``Conway run`` () =
             let h = 3
             let w = 3
             let cs = [|
@@ -124,7 +124,8 @@ module TConway =
             let b = Board.ofCells h w cs
 
             b
-            |> Conway.nextBoard
+            |> Conway.run
+            |> Seq.head
             |> (fun b -> b.Cells)
             |> (=) [| 
                 Conway.Dead;Conway.Dead;Conway.Dead

@@ -9,6 +9,7 @@
 
   <ItemGroup>
     <Compile Include="TConway.fs" />
+    <Compile Include="./Stochastic/TRandomSearch.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>
 
